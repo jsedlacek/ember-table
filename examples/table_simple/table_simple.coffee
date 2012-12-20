@@ -21,7 +21,7 @@ App.TableSimpleExample.TableController = Ember.Table.TableController.extend
   hasHeader: yes
   hasFooter: no
   numFixedColumns: 0
-  numRows: 1000000
+  numRows: 100
   rowHeight: 30
 
   columns: Ember.computed ->
