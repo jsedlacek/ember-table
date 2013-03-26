@@ -1,6 +1,12 @@
 // Mixins
 // -----------------------------------------------------------------------------
-
+.transition (@transition) {
+  -webkit-transition: @transition;
+  -moz-transition:    @transition;
+  -ms-transition:     @transition;
+  -o-transition:      @transition;
+  transition:         @transition;
+}
 .user-select(@value: none){
   -webkit-user-select: @value;
   -moz-user-select: @value;
@@ -27,6 +33,13 @@
   -moz-box-shadow:    @string;
   box-shadow:         @string;
 }
+.transform(@string){
+  -webkit-transform:  @string;
+  -moz-transform:     @string;
+  -ms-transform:      @string;
+  -o-transform:       @string;
+  transform:          @string;
+}
 
 // Ember Table
 // -----------------------------------------------------------------------------
@@ -34,7 +47,42 @@
 /* Variables
 -------------------------------------------------- */
 
+/* Table - Sizes */
 
+@table-left-default-column-width:       500px;
+@table-right-column-max:                3000px;
+@table-right-default-column-width:      150px;
+@table-right-default-viewport-width:    500px;
+@table-body-default-height:             400px;
+@table-row-height:                      26px;
+@table-header-height:                   50px;
+
+/* Table - Font Colors */
+
+@table-header-color:      #ddd;
+@table-body-color:        #666;
+@table-footer-color:      #333;
+@table-header-icon-color: #fff;
+
+/* Table - BG and Border Colors */
+
+@table-header-border-bottom:  #DDD;
+@table-header-bg:             #fff;
+@table-body-bg:               #fcfcfc;
+@table-body-border-color:     #ddd;
+@table-row-selected-color:    #227ECB;
+@table-row-border-color:      #ddd;
+@table-col-border-color:      #ddd;
+@table-footer-bg:             #fff;
+@table-footer-border-top:     #DDD;
+@table-header-hover-bg:       #595959;
+@table-header-ghost-bg:       #656565;
+
+/* Table - Scrollbar */
+
+@scrollbarWidth:         8px;
+@table-scrollbar-width:  8px;
+@table-scrollbar-height: 8px;
 
 /* Ember Table Structure
 -------------------------------------------------- */
@@ -46,162 +94,160 @@
   z-index: 0;
   // Important because of the 4px margins due to inline-block
   font-size: 0;
-  background-color: #E1E1E1;
-  border: 1px solid #E1E1E1;
+  background-color: @table-body-bg;
+  border: 1px solid @table-body-border-color;
   * {
-    .box-sizing(border-box);
+    .box-sizing();
   }
   a{
     color: #333;
   }
-  .table-container{
-    // Height and Width defined dynamically through JS
-    overflow-x: hidden;
-    overflow-y: auto;
+}
+.table-container{
+  // Height and Width defined dynamically through JS
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  z-index: 3;
+}
+.table-fixed-wrapper, .table-scrollable-wrapper{
+  overflow: visible;
+  white-space: nowrap;
+}
+.table-block{
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  overflow: hidden;
+}
+.table-row{
+  // Height and Width defined dynamically through JS
+  position: absolute;
+  border-bottom: 1px dotted @table-row-border-color;
+  .user-select(none);
+  > div {
+    height: 100%;
+  }
+  &.selected {
+    background-color: @table-row-selected-color !important;
+    color: #FFF;
+    cursor: pointer;
+  }
+}
+.table-cell{
+  float: left;
+  // Important to define font size
+  font-size: 13px;
+  border-right: 1px solid @table-col-border-color;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 100%;
+  span{
+    vertical-align: middle;
+    padding: 0;
+    height: 100%;
+    line-height: 30px;
+  }
+  .content{
+    padding: 0 5px;
+  }
+}
+.header-cell{
+  padding: 0px;
+  position: relative;
+  span{
+    padding: 5px;
+    line-height: 50px;
+  }
+  .toggle{
+    padding: 0 0 0 5px;
+  }
+  .column-title{
+    padding: 0;
+  }
+}
+.lazy-list-container {
+  position: relative;
+  .table-row {
+    position: absolute;
+    background-color: @table-body-bg;
+  }
+}
+.table-fixed-wrapper, .table-scrollable-wrapper{
+  .right-table-block{
+    .table-cell:last-child{
+      border-right: none;
+    }
+  }
+}
+.table-fixed-wrapper{
+  // Height and Width defined dynamically through JS
+  overflow: hidden;
+}
+.table-scrollable-wrapper{
+  // Height and Width defined dynamically through JS
+  display: block;
+}
+.scroll-container{
+  // Top, left, height and width defined dynamically through JS
+  position: absolute;
+  overflow-x: auto;
+  overflow-y: hidden;
+  z-index: 1;
+}
+.fixed-table-container{
+  z-index: 4;
+  &.header-container{
+    background-color: @table-header-bg;
+  }
+  &.footer-container{
+    background-color: @table-footer-bg;
+  }
+}
+.footer-container{
+  position: absolute;
+  border-top: 1px solid @table-footer-border-top;
+  overflow: hidden;
+}
+.header-container{
+  border-bottom: 1px solid @table-header-border-bottom;
+  overflow: hidden;
+  .ui-state-highlight{
+    float: left;
+    height: 50px;
+    width: 150px;
+    background-color: #E1E1E1;
+  }
+  .ui-resizable-handle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: @table-header-bg;
+    height: 100%;
+    width: 5px;
+    .transition(background-color 0.1s ease-in);
+  }
+  .ui-resizable-handle:hover{
+    background-color: darken(@table-header-bg, 10%);
+    cursor: ew-resize;
+  }
+  .ui-sortable{
+    width: 100%;
+    height: 100%;
     position: relative;
-    background-color: #FFF;
-    z-index: 3;
-    .table-fixed-wrapper, .table-scrollable-wrapper{
-      overflow: visible;
-      white-space: nowrap;
-      .table-block{
-        display: inline-block;
-        position: relative;
-        vertical-align: top;
-        overflow: hidden;
-        background-color: #F5F5F5;
-        .table-row{
-          // Height and Width defined dynamically through JS
-          position: absolute;
-          border-bottom: 1px solid #E1E1E1;
-          .user-select(none);
-          > div {
-            height: 100%;
-          }
-          &.selected {
-            background-color: #227ECB !important;
-            color: #FFF;
-            cursor: pointer;
-          }
-          .table-cell{
-            float: left;
-            // Important to define font size
-            font-size: 13px;
-            border-right: 1px solid #E1E1E1;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            height: 100%;
-            span{
-              vertical-align: middle;
-              padding: 0;
-              height: 100%;
-              line-height: 30px;
-            }
-            .content{
-              padding: 0 5px;
-            }
-          }
-          .header-cell{
-            padding: 0px;
-            position: relative;
-            span{
-              padding: 5px;
-              line-height: 50px;
-            }
-            .toggle{
-              padding: 0 0 0 5px;
-            }
-            .column-title{
-              padding: 0;
-            }
-          }
-        }
-      }
-      .lazy-list-container {
-        position: relative;
-        .table-row {
-          position: absolute;
-          background-color: #FFF;
-        }
-      }
-    }
-    .table-fixed-wrapper, .table-scrollable-wrapper{
-      .right-table-block{
-        .table-cell:last-child{
-          border-right: none;
-        }
-      }
-    }
-    .table-fixed-wrapper{
-      // Height and Width defined dynamically through JS
-      overflow: hidden;
-    }
-    .table-scrollable-wrapper{
-      // Height and Width defined dynamically through JS
-      display: block;
-    }
   }
-  .scroll-container{
-      // Top, left, height and width defined dynamically through JS
-    position: absolute;
-    overflow-x: auto;
-    overflow-y: hidden;
-    z-index: 1;
-  }
-  .fixed-table-container{
-    z-index: 4;
-    background-color: #E8E8E8;
-  }
-  .footer-container{
-    position: absolute;
-    border-top: 1px solid #E1E1E1;
-    overflow: hidden;
-  }
-  .header-container{
-    border-bottom: 1px solid #E1E1E1;
-    overflow: hidden;
-    .ui-resizable{
-      background-color: #F5F5F5;
-    }
-    .ui-state-highlight{
-      float: left;
-      height: 50px;
-      width: 150px;
-      background-color: #E1E1E1;
-    }
-    .ui-resizable-handle {
-      position: absolute;
-      right: 0;
-      top: 0;
-      background-color: #F5F5F5;
-      height: 100%;
-      width: 4px;
-      transition: background-color 0.1s ease-in;
-      -moz-transition: background-color 0.1s ease-in;
-      -webkit-transition: background-color 0.1s ease-in;
-      -o-transition: background-color 0.1s ease-in;
-    }
-    .ui-resizable-handle:hover{
-      background-color: #C1C1C1;
-      cursor: ew-resize;
-    }
-    .ui-sortable{
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-    .ui-sortable-helper{
+  .ui-sortable-helper{
+    background-color: #EAEAEA;
+    .ui-resizable-handle{
       background-color: #EAEAEA;
-      .ui-resizable-handle{
-        background-color: #EAEAEA;
-      }
     }
   }
 }
 
-/* Ember Tree Table
--------------------------------------------------- */
+
+/* Tree Table */
+
 .header-cell{
   .toggle{
     margin-top: 3px;
@@ -221,11 +267,7 @@
   padding-left: 3px;
 }
 .expand .toggle-icon{
-  transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
+  .transform(rotate(-90deg));
   margin-top: -3px;
   padding-left: 0;
   vertical-align: text-top;
