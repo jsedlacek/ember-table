@@ -97,7 +97,10 @@ Ember.Table.TableController = Ember.Controller.extend
   # The height per row. We need to know this for the lazy rendering.
   # TODO: The following three variables should be shared with LESS file
   rowHeight: 30
-  headerHeight: 50
+  headerHeight: Ember.computed ->
+    console.log('headerHeight', @get('rowHeight') * @get('numFixedRows'))
+    @get('rowHeight') * @get('numFixedRows')
+  .property('rowHeight', 'numFixedRows')
   footerHeight: 30
   hasHeader: yes
   hasFooter: yes
@@ -113,6 +116,12 @@ Ember.Table.TableController = Ember.Controller.extend
       tableRowClass: Ember.Table.Row
       content: @get('content')
   .property 'content'
+
+  _headerContent: Ember.computed ->
+    Ember.Table.RowArrayProxy.create
+      tableRowClass: Ember.Table.Row
+      content: @get('headerContent')
+  .property 'headerContent'
 
   # Array of Ember.Table.Row
   footerContent: Ember.computed (key, value) ->
@@ -210,6 +219,10 @@ Ember.Table.TableController = Ember.Controller.extend
   _numItemsShowing: Ember.computed ->
     Math.floor @get('_bodyHeight') / @get('rowHeight')
   .property '_bodyHeight', 'rowHeight'
+
+  _numHeaderItemsShowing: Ember.computed ->
+    Math.floor @get('headerHeight') / @get('rowHeight')
+  .property 'headerHeight', 'rowHeight'
 
   _startIndex: Ember.computed ->
     numContent  = @get 'bodyContent.length'

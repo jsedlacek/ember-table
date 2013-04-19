@@ -12,10 +12,12 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
     @onNumChildViewsDidChange()
 
   height: Ember.computed ->
+    console.log 'content', @get('content'), @get('content.length'), @get('rowHeight')
     @get('content.length') * @get('rowHeight')
   .property 'content.length', 'rowHeight'
 
   numChildViews: Ember.computed ->
+    console.log 'numItemsShowing', @get('numItemsShowing')
     @get('numItemsShowing') + 2
   .property 'numItemsShowing'
 
@@ -23,6 +25,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
     # We are getting the class from a string e.g. "Ember.Table.Row"
     itemViewClass = Ember.get @get('itemViewClass')
     newNumViews = @get 'numChildViews'
+    console.log 'newNumViews', newNumViews
     return unless itemViewClass and newNumViews
     oldNumViews = @get('length')
     numViewsToInsert = newNumViews - oldNumViews

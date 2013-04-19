@@ -27,6 +27,7 @@
         <li>{{#linkTo tableCell}}Table Cell{{/linkTo}}</li>
         <li>{{#linkTo tableRow}}Table Row{{/linkTo}}</li>
         <li>{{#linkTo tableBlock}}Table Block{{/linkTo}}</li>
+        <li>{{#linkTo multiHeader}}Multi Header{{/linkTo}}</li>
       </ul>
     </script>
 
@@ -42,7 +43,10 @@
       <div class="table-fixed-wrapper">
       <div class="table-block" style="height:100px;width:400px;">
       <div class="table-row" style="width:400px;top:0px;height:100px;">
-        {{view Ember.Table.TableCell rowBinding="model.row" contentBinding="model.content"}}
+        {{view Ember.Table.TableCell
+          rowBinding="model.row"
+          contentBinding="model.content"
+        }}
       </div>
       </div>
       </div>
@@ -58,10 +62,6 @@
         {{view Ember.Table.TableRow
           columnsBinding="model.columns"
           contentBinding="model.content"
-          heightBinding="model.height"
-          widthBinding="model.width"
-          itemIndexBinding="model.itemIndex"
-          rowHeightBinding="model.rowHeight"
         }}
       </div>
       </div>
@@ -73,11 +73,11 @@
       <div class="tables-container">
       <div class="table-container" style="height:100px;width:400px;">
       <div class="table-fixed-wrapper">
-        {{view Ember.Table.TableBlock
+        {{view Ember.Table.LazyTableBlock
           columnsBinding="model.columns"
           contentBinding="model.content"
           itemViewClassBinding="model.itemViewClass"
-          heightBinding="model.height"
+          numItemsShowingBinding="model.numItemsShowing"
           widthBinding="model.width"
         }}
       </div>
@@ -85,6 +85,11 @@
       </div>
     </script>
 
+    <script type="text/x-handlebars" data-template-name="multiHeader">
+      <div class='presentation-container'>
+        {{view Ember.Table.TablesContainer controllerBinding="model.controller"}}
+      </div>
+    </script>
     <script src="../../lib/jquery-1.9.1.min.js"></script>
     <script src="../../lib/jquery-ui-1.10.1.custom.min.js"></script>
     <script src="../../lib/jquery.mousewheel.js"></script>
