@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Less CSS -->
+    <link rel="stylesheet" type="text/css"
+      href="../../stylesheets/ember-table.css">
+    <script src="../../lib/modernizr-2.6.1.min.js"></script>
+  </head>
+  <body>
+
+    <script type="text/x-handlebars" data-template-name="application">
+        {{#linkTo index}}Home{{/linkTo}}
+        <hr>
+        {{outlet}}
+    </script>
+
+
+    <script type="text/x-handlebars" data-template-name="index">
+      <ul>
+        <li>{{#linkTo table}}Table{{/linkTo}}</li>
+        <li>{{#linkTo tableCell}}Table Cell{{/linkTo}}</li>
+        <li>{{#linkTo tableRow}}Table Row{{/linkTo}}</li>
+        <li>{{#linkTo tableBlock}}Table Block{{/linkTo}}</li>
+      </ul>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="table">
+      <div class='presentation-container'>
+        {{view Ember.Table.TablesContainer controllerBinding="model.controller"}}
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="tableCell">
+      <div class="tables-container">
+      <div class="table-container" style="height:100px;width:400px;">
+      <div class="table-fixed-wrapper">
+      <div class="table-block" style="height:100px;width:400px;">
+      <div class="table-row" style="width:400px;top:0px;height:100px;">
+        {{view Ember.Table.TableCell rowBinding="model.row" contentBinding="model.content"}}
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="tableRow">
+      <div class="tables-container">
+      <div class="table-container" style="height:100px;width:400px;">
+      <div class="table-fixed-wrapper">
+      <div class="table-block" style="height:100px;width:400px;">
+        {{view Ember.Table.TableRow
+          columnsBinding="model.columns"
+          contentBinding="model.content"
+          heightBinding="model.height"
+          widthBinding="model.width"
+          itemIndexBinding="model.itemIndex"
+          rowHeightBinding="model.rowHeight"
+        }}
+      </div>
+      </div>
+      </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="tableBlock">
+      <div class="tables-container">
+      <div class="table-container" style="height:100px;width:400px;">
+      <div class="table-fixed-wrapper">
+        {{view Ember.Table.TableBlock
+          columnsBinding="model.columns"
+          contentBinding="model.content"
+          itemViewClassBinding="model.itemViewClass"
+          heightBinding="model.height"
+          widthBinding="model.width"
+        }}
+      </div>
+      </div>
+      </div>
+    </script>
+
+    <script src="../../lib/jquery-1.9.1.min.js"></script>
+    <script src="../../lib/jquery-ui-1.10.1.custom.min.js"></script>
+    <script src="../../lib/jquery.mousewheel.js"></script>
+    <script src="../../lib/bootstrap.js"></script>
+    <script src="../../lib/handlebars.js"></script>
+    <script src="../../lib/ember.js"></script>
+    <script src="../../lib/ember-table.js"></script>
+    <script src="app.js"></script>
+    <script src="table_simple.js"></script>
+  </body>
+</html>
